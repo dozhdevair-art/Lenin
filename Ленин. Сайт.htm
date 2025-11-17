@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Рукопись В. И. Ленина проекта декрета о национализации флота</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: #f5f5f5;
+      color: #222;
+    }
+
+    .page {
+      max-width: 1400px;             /* шире страница */
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      line-height: 1.4;
+      margin: 0 0 24px;
+      font-weight: 600;
+    }
+
+    .layout {
+      display: flex;
+      gap: 24px;
+      align-items: stretch;          /* обе панели одной высоты */
+    }
+
+    .left-panel,
+    .right-panel {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .left-panel {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .right-panel {
+      flex: 3;
+      overflow: visible;
+      max-height: none;
+      display: flex;                 /* чтобы заголовок+текст+примечания были колонкой */
+      flex-direction: column;
+    }
+
+    .image-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .icon-button {
+      border: 1px solid #ccc;
+      background: #fdfdfd;
+      border-radius: 999px;
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease,
+                  box-shadow 0.15s ease, border-color 0.15s ease;
+      padding: 0;
+    }
+
+    .icon-button svg {
+      width: 18px;
+      height: 18px;
+      stroke: #000;
+      fill: none;
+    }
+
+    .icon-button:hover {
+      background: #f0f0f0;
+      border-color: #999;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+
+    .icon-button:active {
+      transform: scale(0.96);
+    }
+
+    .icon-button:focus-visible {
+      outline: 2px solid #000;
+      outline-offset: 2px;
+    }
+
+    .image-viewer {
+      position: relative;
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 450px;
+    }
+
+    .image-viewer img {
+      display: block;
+      max-width: 150%;
+      height: auto;
+      max-height: calc(100vh - 140px);
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .editor-notes {
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: #555;
+      line-height: 1.4;
+    }
+
+    /* --- Фуллскрин-режим с центрированием --- */
+    .image-viewer.fullscreen {
+      background: #000;
+      border-radius: 0;
+      padding: 16px;
+      overflow: auto;
+      min-height: 100vh;
+      display: block;
+      text-align: center;
+    }
+
+    .image-viewer.fullscreen img {
+      max-width: none;
+      max-height: none;
+      width: auto;
+      height: auto;
+      border-radius: 0;
+      display: inline-block;
+      margin: 0 auto;
+    }
+    /* --- конец фуллскрина --- */
+
+    .doctype-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin: 0 0 12px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    pre, code {
+      font-family: "JetBrains Mono", "Fira Code", Menlo, Monaco, Consolas, "Courier New", monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    pre {
+      margin: 0;
+      flex: 1 1 auto;  /* текст документа занимает доступную высоту в правой панели */
+    }
+
+    /* НИЖНИЙ БЛОК-ОПИСАНИЕ */
+    .description-panel {
+      margin-top: 24px;
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 18px 20px 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .description-section {
+      margin-bottom: 16px;
+    }
+
+    .description-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .description-section-title {
+      font-weight: 700;
+      color: #123c60; /* тёмно-синий */
+      margin: 0 0 6px;
+      font-size: 1rem;
+    }
+
+    .meta-item {
+      margin: 2px 0;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .meta-item-label {
+      font-weight: 600;
+      color: #444; /* тёмно-серый */
+    }
+
+    @media (max-width: 880px) {
+      .layout {
+        flex-direction: column;
+      }
+
+      .right-panel {
+        max-height: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>
+      Рукопись проекта декрета о национализации морского и речного торгового флота.
+      — 18 (31) января 1918 г. (В. И. Ленин)
+    </h1>
+
+    <div class="layout">
+      <!-- Левая часть: изображения -->
+      <section class="left-panel">
+        <div class="image-toolbar">
+          <!-- Кнопка "глаз" (переключение изображений) -->
+          <button class="icon-button" id="toggle-eye" type="button" aria-label="Переключить вариант изображения">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <ellipse cx="12" cy="12" rx="8" ry="5" />
+              <circle cx="12" cy="12" r="2.5" />
+            </svg>
+          </button>
+
+          <!-- Кнопка "лупа" (полноэкранный просмотр) -->
+          <button class="icon-button" id="zoom-btn" type="button" aria-label="Открыть изображение на полный экран">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="10" cy="10" r="5" />
+              <line x1="13.5" y1="13.5" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="image-viewer" id="image-viewer">
+          <img
+            id="document-image"
+            src="https://i.ibb.co/Y7GkvGPT/img-Hy-Q3-Z2.jpg"
+            alt="Рукопись В. И. Ленина проекта декрета о национализации морского и речного торгового флота"
+          >
+        </div>
+      </section>
+
+      <!-- Правая часть: блок для текста документа -->
+      <section class="right-panel">
+        <div class="doctype-title">Текст документа</div>
+        <pre><code><table style="border-collapse: collapse; width: 100%; table-layout: fixed;">
+  <tr>
+    <td style="border: 1px solid #000; vertical-align: top; white-space: pre; width: 55%;">
+                 <span style="color: #767171;">[основной текст]</span>
+    </td>
+    <td style="border: 1px solid #000; vertical-align: top; white-space: pre; width: 45%;">
+            <span style="color: #767171;">[приписки на полях]</span>
+    </td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #000; vertical-align: top; white-space: pre;">
+ 3. Декретируется национализацiя всего 
+          флота.
+
+ 4. Забота о поддержанiи порядка на судах
+      об их сохраненiи и проч. возлагается
+      непосредственно на судовыя коман-
+      ды, а затем на союзы суд. рабочих
+      каждаго бассейна или моря.          <span style="color: #767171;">[стрелка]</span>
+
+ 5. Ц. управленiями всего нацiонализо-
+      ваннаго флота, временно, впредь 
+      до съезда <span style="color: #767171; text-decoration: line-through;">[нрзб.]</span> и до объединенiя, при-
+      знаются <span style="color: #767171; text-decoration: line-through;">избранныя по каждому </span>
+      <span style="color: #767171; text-decoration: line-through;">бассейну или по каждому морю</span>       +<span style="color: #767171;">[стрелка]</span>
+    <span style="color: #767171;">[над зачеркнутым] </span>Ц.К. и Центроволга. 
+
+ 6. Ц. управленiя действуют в <span style="color: #767171; text-decoration: line-through;">[нрзб.] </span>полном
+       <span style="color: #767171; text-decoration: line-through;">[нрзб.] </span>подчинении органам
+       местной и центральной
+       советской власти. 
+
+                  <span style="color: #767171;">[сгиб страницы]</span>
+
+<div style="text-align: center;">
+Проектъ
+      декрета:
+</div>
+
+ 1. С.Н.К. констатирует, что
+ и Ц.К. и Центроволга вполне
+ согласны относительно необходи-
+ мости нацiонализировать тотчас
+ и без выкупа все морскiя и речныя
+ суда, служащiя для торговых целей.
+ 2. Поэтому С.Н.К. постано-
+ вляет осуществить эту нац-зцiю
+ немедленно, поручив <span style="color: #767171; text-decoration: line-through;">[нрзб.]</span>              <span style="color: #767171;">[стрелка]</span>
+ разработать нижеслед. основы
+ декрета о нац-зцiи и представить
+ их С.Н.К. через 2 дня. 
+    </td>
+    <td style="border: 1px solid #000; vertical-align: top; white-space: pre;">
+
+
+
+
+
+  Добавить 
+  §3 изъ Обо-
+  Ленскаго
+
+
+  + <span style="color: #767171;">[обведено в рамку]</span>
+  Если объедине-
+  нiя не будет
+  достигнуто
+  добровольно, то
+  оно будет осу-
+  ществлено
+  советской
+  властью
+  принуди-
+  тельно.
+
+  +
+  +
+  <span style="color: #767171;">[взято в фигурную скобку 
+  слева]</span>
+  § 1 из
+  рез. 
+  Т.
+  Обол.
+
+  <span style="color: #767171;">[в круглой рамке] </span>
+  из предст.
+  Морск. <span style="color: #767171;">[нрзб.]</span>
+
+  поручив особой ком-
+  миссии <span style="color: #767171;">[приписка выше]</span> из 2-х
+  предст. от Ц.К., 2х
+  от Ц.волги и пред-
+  седателя по назнач.
+  Ц.С.Н.К.
+    </td>
+  </tr>
+</table>
+</code></pre>
+
+        <div class="editor-notes">
+          […] – пояснения редактора;<br>
+          нрзб. – соответствует одному нерасшифрованному слову;<br>
+          з̶а̶ч̶е̶р̶к̶н̶у̶т̶о̶ – зачеркнуто Лениным.
+        </div>
+      </section>
+    </div>
+
+    <!-- НИЖНИЙ БЛОК-ОПИСАНИЕ НА ВСЮ ШИРИНУ -->
+    <section class="description-panel">
+      <div class="description-section">
+        <div class="description-section-title">Описание</div>
+        <p class="meta-item">
+          <span class="meta-item-label">Название: </span>
+          Рукопись проекта декрета о национализации морского и речного торгового флота
+        </p>
+        <p class="meta-item">
+          <span class="meta-item-label">Автор: </span>
+          В. И. Ленин
+        </p>
+        <p class="meta-item">
+          <span class="meta-item-label">Место публикации: </span>
+          Петроград
+        </p>
+        <p class="meta-item">
+          <span class="meta-item-label">Дата: </span>
+          18 (31) января 1918 г.
+        </p>
+        <p class="meta-item">
+          <span class="meta-item-label">Количество страниц: </span>
+          1
+        </p>
+        <p class="meta-item">
+          <span class="meta-item-label">Место хранения подлинника: </span>
+          Российский государственный архив социально-политической истории (РГАСПИ). Фонд 2. Дело ?
+        </p>
+        <p class="meta-item">
+          <span class="meta-item-label">Описание: </span>
+          ???????????????
+        </p>
+      </div>
+
+      <div class="description-section">
+        <div class="description-section-title">Электронная копия</div>
+        <p class="meta-item">
+          <span class="meta-item-label">Дата создания: </span>
+          16 ноября 2025
+        </p>
+        <p class="meta-item">
+          <span class="meta-item-label">Обработка: </span>
+          графическая резкостная обработка, автовыравнивание контраста и уровней.
+        </p>
+      </div>
+
+      <div class="description-section">
+        <div class="description-section-title">Права доступа</div>
+        <p class="meta-item">
+          <span class="meta-item-label">Доступ: </span>
+          Публичный
+        </p>
+        <p class="meta-item">
+          <span class="meta-item-label">Права: </span>
+          Использование изображения в исследовательских целях
+        </p>
+        <p class="meta-item">
+          <span class="meta-item-label">Цитирование: </span>
+          Рукопись проекта декрета о национализации морского и речного торгового флота. — 18 (31) января 1918 г. (В. И. Ленин) // Сайт ??? [Электронный доступ] URL: ссылка (дата обращения 18.11.2025)
+        </p>
+      </div>
+
+      <div class="description-section">
+        <div class="description-section-title">Публикации документа</div>
+        <p class="meta-item">
+          Полное собрание сочинений, Ленин. Т. 35 Октябрь 1917 - март 1918. — 1969. — С. 349.
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function() {
+      const images = [
+        "https://i.ibb.co/Y7GkvGPT/img-Hy-Q3-Z2.jpg",
+        "https://i.ibb.co/NgDfTTf5/2.jpg",
+        "https://i.ibb.co/C5WH0wzQ/3.jpg"
+      ];
+
+      let currentIndex = 0;
+
+      const imgEl = document.getElementById("document-image");
+      const viewerEl = document.getElementById("image-viewer");
+      const eyeBtn = document.getElementById("toggle-eye");
+      const zoomBtn = document.getElementById("zoom-btn");
+
+      eyeBtn.addEventListener("click", function() {
+        currentIndex = (currentIndex + 1) % images.length;
+        imgEl.src = images[currentIndex];
+      });
+
+      function openFullscreen(elem) {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) {
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) {
+          elem.msRequestFullscreen();
+        }
+      }
+
+      function closeFullscreen() {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      }
+
+      zoomBtn.addEventListener("click", function() {
+        if (!document.fullscreenElement &&
+            !document.webkitFullscreenElement &&
+            !document.msFullscreenElement) {
+          openFullscreen(viewerEl);
+          viewerEl.classList.add("fullscreen");
+        } else {
+          closeFullscreen();
+          viewerEl.classList.remove("fullscreen");
+        }
+      });
+
+      document.addEventListener("fullscreenchange", function() {
+        if (!document.fullscreenElement) {
+          viewerEl.classList.remove("fullscreen");
+        }
+      });
+      document.addEventListener("webkitfullscreenchange", function() {
+        if (!document.webkitFullscreenElement) {
+          viewerEl.classList.remove("fullscreen");
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
